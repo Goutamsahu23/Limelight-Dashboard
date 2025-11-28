@@ -108,7 +108,7 @@ function App() {
       {/* Header */}
       <header className="app-header">
         <div className="app-title-block">
-          <h1>Limelight Device Dashboard</h1>
+          <h1>Limelight Dashboard</h1>
           <p className="subtitle">Live 1 Hz device stream · Demo dashboard</p>
         </div>
 
