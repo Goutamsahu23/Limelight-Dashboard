@@ -1,18 +1,3 @@
-// src/utils/insights.js
-//
-// FINAL INSIGHTS LOGIC (strict thresholds per spec +
-// relaxed thresholds for short datasets)
-//
-// Strict thresholds from assignment:
-// - Low PF: PF < 0.8 for >= 5 min
-// - Phase imbalance: > 15% for >= 2 min
-// - Peak 15-min demand: rolling 15-min avg kW
-//
-// Relaxed thresholds (allowed by spec: “allow shorter threshold and note it”):
-// - Low PF (relaxed): PF < 0.90 for >= 2 min
-// - Phase imbalance (relaxed): > 10% for >= 1 min
-
-// Try to extract a readable timestamp from a record
 function safeTime(r) {
   if (!r) return "(no data)";
 

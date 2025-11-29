@@ -57,10 +57,12 @@ function downloadCsv(csvText, filename) {
   URL.revokeObjectURL(url);
 }
 
+const STREAM_URL = process.env.REACT_APP_STREAM_URL || 'http://localhost:8080/stream';
+
 function App() {
   // also getting lastMessageAt from the hook
   const { records, error, connected, lastMessageAt } = useDeviceStream(
-    'http://localhost:8080/stream'
+    STREAM_URL
   );
 
   // Time window in minutes (5, 15, 30)

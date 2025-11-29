@@ -1,4 +1,3 @@
-// src/components/charts/ThroughputChart.js
 import React from "react";
 import {
   ResponsiveContainer,
@@ -11,33 +10,72 @@ import {
 } from "recharts";
 
 function ThroughputChart({ data }) {
+  const hasData = Array.isArray(data) && data.length > 0;
+
+  const headingId = "throughput-chart-heading";
+  const descId = "throughput-chart-description";
+  const summaryId = "throughput-chart-summary";
+
+  // Text summary for screen readers / non-visual users
+  let latestSummary = "No throughput data available yet.";
+  if (hasData) {
+    const latest = data[data.length - 1];
+    const { rate, time } = latest || {};
+    latestSummary = `Latest throughput reading at ${
+      time ?? "latest time"
+    }: ${rate != null ? `${rate.toFixed(2)} units per minute` : "N/A"}.`;
+  }
+
   return (
-    <section className="card">
-      <h2>Throughput (units/min · rolling 60s)</h2>
-      <p style={{ fontSize: "0.85rem", color: "#9ca3af", marginTop: 0 }}>
+    <section
+      className="card"
+      aria-labelledby={headingId}
+      aria-describedby={`${descId} ${summaryId}`}
+    >
+      <h2 id={headingId}>Throughput (units/min · rolling 60s)</h2>
+
+      <p
+        id={descId}
+        style={{ fontSize: "0.85rem", color: "#9ca3af", marginTop: 0 }}
+      >
         Rolling 60-second production rate, derived from count_total.
       </p>
 
-      {(!data || data.length === 0) ? (
-        <p>No data yet… waiting for stream.</p>
+      <p
+        id={summaryId}
+        style={{ fontSize: "0.85rem", color: "#9ca3af", marginTop: 4 }}
+      >
+        {latestSummary}
+      </p>
+
+      {!hasData ? (
+        <p aria-live="polite" role="status">
+          No data yet… waiting for stream.
+        </p>
       ) : (
-        <div style={{ width: "100%", height: 140 }}>
+        <div
+          style={{ width: "100%", height: 140 }}
+          aria-hidden="true" // hide chart from screen readers
+        >
           <ResponsiveContainer>
             <LineChart
               data={data}
               margin={{ top: 8, right: 20, left: 0, bottom: 0 }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#111827" />
+
               <XAxis
                 dataKey="time"
                 tick={{ fontSize: 9, fill: "#6b7280" }}
                 interval="preserveStartEnd"
               />
+
               <YAxis
                 tick={{ fontSize: 9, fill: "#6b7280" }}
                 width={50}
                 tickLine={false}
               />
+
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#020617",
@@ -49,6 +87,7 @@ function ThroughputChart({ data }) {
                   value != null ? `${value.toFixed(2)} units/min` : "-"
                 }
               />
+
               <Line
                 type="monotone"
                 dataKey="rate"

@@ -1,4 +1,3 @@
-// src/components/ChartSection.js
 import React, { useMemo, useState, Suspense } from "react";
 
 // Lazy-load heavy chart components
@@ -12,6 +11,13 @@ const PhaseVoltagesChart = React.lazy(() =>
 const ThroughputChart = React.lazy(() =>
   import("./charts/ThroughputChart")
 );
+
+const TAB_CONFIG = [
+  { id: "power", label: "Power", panelId: "chart-panel-power" },
+  { id: "currents", label: "Phase Currents", panelId: "chart-panel-currents" },
+  { id: "voltages", label: "Phase Voltages", panelId: "chart-panel-voltages" },
+  { id: "throughput", label: "Throughput", panelId: "chart-panel-throughput" },
+];
 
 function ChartSection({ records }) {
   const [activeTab, setActiveTab] = useState("power"); // "power" | "currents" | "voltages" | "throughput"
@@ -105,57 +111,95 @@ function ChartSection({ records }) {
     return result;
   }, [records]);
 
+  const handleTabClick = (id) => {
+    setActiveTab(id);
+  };
+
+  const handleTabKeyDown = (event) => {
+    const key = event.key;
+    const currentIndex = TAB_CONFIG.findIndex((t) => t.id === activeTab);
+
+    if (currentIndex === -1) return;
+
+    if (key === "ArrowRight" || key === "ArrowLeft") {
+      event.preventDefault();
+      const direction = key === "ArrowRight" ? 1 : -1;
+      const newIndex =
+        (currentIndex + direction + TAB_CONFIG.length) % TAB_CONFIG.length;
+      const newTab = TAB_CONFIG[newIndex].id;
+      setActiveTab(newTab);
+      const btn = document.getElementById(`tab-${newTab}`);
+      if (btn) btn.focus();
+    } else if (key === "Home") {
+      event.preventDefault();
+      const firstTab = TAB_CONFIG[0].id;
+      setActiveTab(firstTab);
+      const btn = document.getElementById(`tab-${firstTab}`);
+      if (btn) btn.focus();
+    } else if (key === "End") {
+      event.preventDefault();
+      const lastTab = TAB_CONFIG[TAB_CONFIG.length - 1].id;
+      setActiveTab(lastTab);
+      const btn = document.getElementById(`tab-${lastTab}`);
+      if (btn) btn.focus();
+    }
+  };
+
+  const activeTabConfig = TAB_CONFIG.find((t) => t.id === activeTab);
+
   return (
-    <div>
+    <div aria-label="Device charts" role="region">
       {/* Tabs */}
-      <div className="chart-tabs">
-        <button
-          className={`chart-tab ${activeTab === "power" ? "active" : ""}`}
-          onClick={() => setActiveTab("power")}
-        >
-          Power
-        </button>
-        <button
-          className={`chart-tab ${activeTab === "currents" ? "active" : ""}`}
-          onClick={() => setActiveTab("currents")}
-        >
-          Phase Currents
-        </button>
-        <button
-          className={`chart-tab ${activeTab === "voltages" ? "active" : ""}`}
-          onClick={() => setActiveTab("voltages")}
-        >
-          Phase Voltages
-        </button>
-        <button
-          className={`chart-tab ${
-            activeTab === "throughput" ? "active" : ""
-          }`}
-          onClick={() => setActiveTab("throughput")}
-        >
-          Throughput
-        </button>
+      <div
+        className="chart-tabs"
+        role="tablist"
+        aria-label="Select chart type"
+        onKeyDown={handleTabKeyDown}
+      >
+        {TAB_CONFIG.map((tab) => (
+          <button
+            key={tab.id}
+            id={`tab-${tab.id}`}
+            className={`chart-tab ${activeTab === tab.id ? "active" : ""}`}
+            onClick={() => handleTabClick(tab.id)}
+            role="tab"
+            type="button"
+            aria-selected={activeTab === tab.id}
+            aria-controls={tab.panelId}
+            tabIndex={activeTab === tab.id ? 0 : -1}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {/* Only the active chart is mounted & loaded */}
-      <Suspense
-        fallback={
-          <section className="card">
-            <p>Loading chart…</p>
-          </section>
-        }
+      {/* Only the active chart is mounted & loaded, wrapped in a tabpanel */}
+      <div
+        role="tabpanel"
+        id={activeTabConfig?.panelId}
+        aria-labelledby={activeTabConfig && `tab-${activeTabConfig.id}`}
       >
-        {activeTab === "power" && <PowerChart data={chartData} />}
-        {activeTab === "currents" && (
-          <PhaseCurrentsChart data={currentsData} />
-        )}
-        {activeTab === "voltages" && (
-          <PhaseVoltagesChart data={voltagesData} />
-        )}
-        {activeTab === "throughput" && (
-          <ThroughputChart data={throughputData} />
-        )}
-      </Suspense>
+        <Suspense
+          fallback={
+            <section className="card">
+              <p aria-live="polite" role="status">
+                Loading chart…
+              </p>
+            </section>
+          }
+        >
+          {activeTab === "power" && <PowerChart data={chartData} />}
+          {activeTab === "currents" && (
+            <PhaseCurrentsChart data={currentsData} />
+          )}
+          {activeTab === "voltages" && (
+            <PhaseVoltagesChart data={voltagesData} />
+          )}
+          {activeTab === "throughput" && (
+            <ThroughputChart data={throughputData} />
+          )}
+        </Suspense>
+      </div>
     </div>
   );
 }

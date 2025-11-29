@@ -1,19 +1,23 @@
-/* src/App.css */
+/* =========================================================
+ * GLOBAL
+ * =======================================================*/
 
 .App {
   min-height: 100vh;
   background: #0f172a; /* dark slate */
   color: #e5e7eb;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
-/* Header */
+/* =========================================================
+ * HEADER & STATUS
+ * =======================================================*/
 
 .app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* max-width: 1200px; */
   margin: 0 auto;
   padding: 10px 24px 6px;
   border-bottom: 1px solid #1f2937;
@@ -28,7 +32,7 @@
 .subtitle {
   margin: 4px 0 0;
   font-size: 0.9rem;
-  color: #9ca3af;
+  color: #cbd5e1; 
 }
 
 /* Compact status row on the right */
@@ -82,7 +86,6 @@
 /* Warning bar below header */
 
 .status-warning {
-  /* max-width: 1200px; */
   margin: 0 auto 4px;
   padding: 4px 24px;
   font-size: 0.75rem;
@@ -91,7 +94,41 @@
   border-radius: 8px;
 }
 
-/* Window selector bar */
+/* Optional legacy status-box styles (not used in header now) */
+
+.status-box {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #020617;
+  border: 1px solid #1f2937;
+  font-size: 0.85rem;
+}
+
+.status-label {
+  color: #cbd5e1; /* bump from #9ca3af */
+  margin-right: 4px;
+}
+
+.status-value {
+  font-weight: 600;
+}
+
+.status-value.ok {
+  color: #22c55e;
+}
+
+.status-value.bad {
+  color: #ef4444;
+}
+
+.error-text {
+  margin-top: 4px;
+  color: #f97316;
+}
+
+/* =========================================================
+ * WINDOW BAR & EXPORT BUTTON
+ * =======================================================*/
 
 .window-bar {
   display: flex;
@@ -111,7 +148,7 @@
 
 .window-label {
   font-size: 0.85rem;
-  color: #9ca3af;
+  color: #cbd5e1; 
   margin-right: 4px;
 }
 
@@ -157,47 +194,15 @@
   cursor: not-allowed;
 }
 
-/* (Old status-box styles are kept in case you still use them somewhere, but no longer affect header layout) */
-
-.status-box {
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: #020617;
-  border: 1px solid #1f2937;
-  font-size: 0.85rem;
-}
-
-.status-label {
-  color: #9ca3af;
-  margin-right: 4px;
-}
-
-.status-value {
-  font-weight: 600;
-}
-
-.status-value.ok {
-  color: #22c55e;
-}
-
-.status-value.bad {
-  color: #ef4444;
-}
-
-.error-text {
-  margin-top: 4px;
-  color: #f97316;
-}
-
-/* Main layout */
+/* =========================================================
+ * MAIN LAYOUT & CARDS
+ * =======================================================*/
 
 .app-main {
   padding: 16px 24px 24px;
   max-width: 1200px;
   margin: 0 auto;
 }
-
-/* Cards */
 
 .card {
   background: #020617;
@@ -214,7 +219,7 @@
   margin-bottom: 8px;
 }
 
-/* Grid */
+/* Two-column grid wrapper for KPIs + Insights if used */
 
 .grid-two-columns {
   display: grid;
@@ -223,7 +228,7 @@
   margin-bottom: 16px;
 }
 
-/* Raw JSON */
+/* Raw JSON view */
 
 .raw-json {
   background: #020617;
@@ -235,7 +240,9 @@
   overflow: auto;
 }
 
-/* Responsive for mobile */
+/* =========================================================
+ * RESPONSIVE
+ * =======================================================*/
 
 @media (max-width: 768px) {
   .app-header {
@@ -255,7 +262,9 @@
   }
 }
 
-/* KPI grid */
+/* =========================================================
+ * KPI SECTION – start
+ * =======================================================*/
 
 .kpi-grid {
   display: grid;
@@ -273,7 +282,7 @@
 
 .kpi-label {
   font-size: 0.78rem;
-  color: #9ca3af;
+  color: #cbd5e1; 
   margin-bottom: 4px;
 }
 
@@ -284,13 +293,13 @@
 
 .kpi-unit {
   font-size: 0.8rem;
-  color: #9ca3af;
+  color: #cbd5e1; 
   margin-left: 4px;
 }
 
 .kpi-subtext {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: #94a3b8; 
   margin-top: 4px;
 }
 
@@ -308,7 +317,13 @@
   }
 }
 
-/* Insights list */
+/* =========================================================
+ * KPI SECTION – end
+ * =======================================================*/
+
+/* =========================================================
+ * INSIGHTS SECTION – start
+ * =======================================================*/
 
 .insights-list {
   list-style: none;
@@ -353,31 +368,42 @@
 }
 
 .insight-description {
-  color: #e5e7eb;
+  color: #e5e7eb; 
 }
 
 .insight-details {
-  color: #9ca3af;
+  color: #cbd5e1; 
   margin-top: 2px;
 }
 
 .insight-time {
-  color: #6b7280;
+  color: #94a3b8; 
   margin-top: 2px;
   font-size: 0.75rem;
 }
+
+/* =========================================================
+ * INSIGHTS SECTION – end
+ * =======================================================*/
+
+/* =========================================================
+ * PLACEHOLDER TEXT
+ * =======================================================*/
 
 .placeholder-text {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  min-height: 120px; /* Ensure it has some minimum height */
-  color: #6b7280; /* Muted gray */
+  min-height: 120px;
+  color: #94a3b8; 
   font-size: 0.9rem;
   text-align: center;
 }
 
+/* =========================================================
+ * CHART TABS (if used)
+ * =======================================================*/
 
 .chart-tabs {
   display: inline-flex;
@@ -392,7 +418,7 @@
 .chart-tab {
   border: none;
   background: transparent;
-  color: #9ca3af;
+  color: #cbd5e1; 
   padding: 0.35rem 0.9rem;
   font-size: 0.85rem;
   border-radius: 999px;
@@ -401,5 +427,5 @@
 
 .chart-tab.active {
   background: #111827;
-  color: #e5e7eb;
+  color: #f9fafb;
 }

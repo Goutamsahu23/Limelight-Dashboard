@@ -1,5 +1,3 @@
-// src/utils/kpis.js
-
 // Helper: safely parse a timestamp string to number (ms)
 function toMs(ts) {
   return ts ? Date.parse(ts) : null;

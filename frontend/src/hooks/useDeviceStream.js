@@ -1,4 +1,3 @@
-// src/hooks/useDeviceStream.js
 import { useEffect, useState, useRef } from "react";
 
 export function useDeviceStream(url) {
@@ -24,7 +23,6 @@ export function useDeviceStream(url) {
       try {
         const data = JSON.parse(event.data);
 
-        // ✅ HARD LIMIT: keep at most N recent records in memory
         const MAX_RECORDS = 1800; // 30 minutes at 1 Hz (30 * 60)
 
         bufferRef.current.push(data);
@@ -49,7 +47,7 @@ export function useDeviceStream(url) {
       console.error("SSE error:", err);
       setError("Connection error");
       setConnected(false);
-      // don't close here, let SSE try to reconnect
+
     };
 
     return () => {

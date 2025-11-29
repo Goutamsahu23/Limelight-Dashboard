@@ -1,4 +1,3 @@
-// src/components/charts/PhaseCurrentsChart.js
 import React from "react";
 import {
   ResponsiveContainer,
@@ -11,17 +10,53 @@ import {
 } from "recharts";
 
 function PhaseCurrentsChart({ data }) {
+  const hasData = Array.isArray(data) && data.length > 0;
+  const headingId = "phase-currents-heading";
+  const descId = "phase-currents-description";
+  const summaryId = "phase-currents-summary";
+
+
+  let latestSummary = "No current data available yet.";
+  if (hasData) {
+    const latest = data[data.length - 1];
+    const { ir, iy, ib, time } = latest || {};
+    latestSummary = `Latest readings at ${time ?? "latest time"}: ir ${ir ?? "N/A"} A, iy ${iy ?? "N/A"} A, ib ${ib ?? "N/A"} A.`;
+  }
+
   return (
-    <section className="card">
-      <h2>Phase Currents (ir / iy / ib)</h2>
-      <p style={{ fontSize: "0.85rem", color: "#9ca3af", marginTop: 0 }}>
+    <section
+      className="card"
+      aria-labelledby={headingId}
+      aria-describedby={`${descId} ${summaryId}`}
+    >
+      <h2 id={headingId}>Phase Currents (ir / iy / ib)</h2>
+
+      <p
+        id={descId}
+        style={{ fontSize: "0.85rem", color: "#9ca3af", marginTop: 0 }}
+      >
         Mini trend chart for phase currents, synced with the current time window.
       </p>
 
-      {(!data || data.length === 0) ? (
-        <p>No data yet… waiting for stream.</p>
+
+      <p
+        id={summaryId}
+        style={{ fontSize: "0.85rem", color: "#9ca3af", marginTop: 4 }}
+      >
+        {latestSummary}
+      </p>
+
+      {!hasData ? (
+        // Live region so screen readers announce when data starts coming in
+        <p aria-live="polite" role="status">
+          No data yet… waiting for stream.
+        </p>
       ) : (
-        <div style={{ width: "100%", height: 160 }}>
+        <div
+          style={{ width: "100%", height: 160 }}
+
+          aria-hidden="true"
+        >
           <ResponsiveContainer>
             <LineChart
               data={data}
