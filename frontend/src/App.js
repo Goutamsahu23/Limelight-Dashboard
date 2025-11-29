@@ -6,9 +6,7 @@ import KpiSection from './components/KpiSection';
 import ChartSection from './components/ChartSection';
 import InsightsSection from './components/InsightsSection';
 
-// ✅ NEW: Helper using count instead of timestamp
-// 1 record ≈ 1 second at 1 Hz
-// so windowMinutes * 60 = max samples in window
+
 function getVisibleRecords(records, windowMinutes) {
   if (!records || records.length === 0) return [];
 
@@ -57,13 +55,15 @@ function downloadCsv(csvText, filename) {
   URL.revokeObjectURL(url);
 }
 
-const STREAM_URL = process.env.REACT_APP_STREAM_URL || 'http://localhost:8080/stream';
+const STREAM_URL = process.env.REACT_APP_STREAM_URL || "http://localhost:8080/stream";
+
 
 function App() {
   // also getting lastMessageAt from the hook
   const { records, error, connected, lastMessageAt } = useDeviceStream(
     STREAM_URL
   );
+
 
   // Time window in minutes (5, 15, 30)
   const [windowMinutes, setWindowMinutes] = useState(15);
