@@ -10,4 +10,5 @@ const server = http.createServer((req, res) => {
     send(); const t = setInterval(send, 1000); req.on('close', () => clearInterval(t));
   } else { res.writeHead(200, {'Content-Type':'text/plain'}); res.end('OK. Use /stream for SSE.'); }
 });
-server.listen(8080, () => console.log('SSE at http://localhost:8080/stream'));
+const PORT = process.env.PORT || 8080;
+server.listen(PORT, () => console.log(`SSE at http://localhost:${PORT}/stream`));

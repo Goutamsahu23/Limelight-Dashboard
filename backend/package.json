@@ -1,0 +1,14 @@
+{
+  "name": "limelight-backend",
+  "version": "1.0.0",
+  "description": "SSE server for Limelight Dashboard",
+  "main": "live_sse_server.js",
+  "scripts": {
+    "start": "node live_sse_server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  }
+}
