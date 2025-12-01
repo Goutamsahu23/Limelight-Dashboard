@@ -33,11 +33,18 @@ All calculations (KPIs, charts, insights, CSV export) are based on the **visible
 - **kW vs Time** line chart (live-updating)
 - Adapted to the selected window
 
-### 🔍 Automatic Insights
-Based on the visible window:
-1. Low PF period (PF &lt; 0.80 for ≥ 5 min)  
-2. Phase imbalance event (&gt; 15% for ≥ 2 min)  
-3. Peak 15-min demand window (highest rolling 15-min avg kW)
+### 🔍 Automatic Insights  
+All insights are computed based on the **currently visible time window** and aim to surface meaningful electrical and operational patterns.
+
+1. **Low PF Period**  
+   The dashboard scans for any continuous duration where the power factor stays below the threshold. Low PF can impact power quality and lead to billing penalties, so even short low-PF periods help highlight inefficiencies. Because the dataset is only ~20 minutes long, the duration threshold is adjusted proportionally while keeping the logic realistic.
+
+2. **Phase Imbalance Event**  
+   The system detects windows where phase imbalance exceeds 15% for a sustained period. Phase imbalance can damage motors, reduce efficiency, and cause overheating, so catching these periods early gives operators clear visibility into potential electrical issues.
+
+3. **Peak 15-Minute Demand Window** 
+   A rolling 15-minute average of kW is computed, and the window with the highest demand is highlighted along with its timestamp. Peak demand plays a major role in industrial energy costs, so finding the highest load period—even in a short dataset—helps reveal meaningful machine behavior.
+
 
 ### 📥 CSV Export
 - Export **only the visible window** as a CSV file  
